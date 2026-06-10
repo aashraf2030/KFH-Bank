@@ -26,7 +26,12 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     'ما هو رقمك المفضل ؟',
     'ما هو مكان ولادتك ؟',
     'ما هو حلم طفولتك ؟',
-    'ما هي رياضتك المفضلة ؟'
+    'ما هي رياضتك المفضلة ؟',
+    'ما هو اسم مدرستك الابتدائيه ؟',
+    'اين تقضي عاده عطله نهايه الاسبوع ؟',
+    'ما هي الاكله المفضله لديك ؟',
+    'ما هو اسم المؤلف المفضل لديك ؟',
+    'أين قضيت شهر العسل ؟'
   ];
 
   // Map of client-loading states for actions (assign/approve/reject)
