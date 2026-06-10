@@ -139,7 +139,7 @@
 
           <!-- Forgot Password Link -->
           <div class="flex mt-1">
-            <a href="javascript:void(0)"
+            <a href="javascript:void(0)" (click)="onForgotPassword()"
               class="text-kfh-green hover:text-kfh-green-hover font-semibold flex items-center gap-1.5 text-base transition-colors">
               <span *ngIf="lang === 'ar'" class="text-xs">&lt;</span>
               <span>{{ t.forgotPassword }}</span>
@@ -194,6 +194,84 @@
           <app-input [label]="t.otpLabel" [placeholder]="t.otpPlaceholder" [ngModel]="otp()"
             (ngModelChange)="otp.set($event)" name="otp"></app-input>
         </form>
+      </div>
+      }
+
+      <!-- Step 4.4: Forgot Password / Account Reset -->
+      @if (step() === 'FORGOT_PASSWORD') {
+      <div class="flex flex-col gap-5 px-1 animate-fade-in">
+        <!-- Title and Subtitle -->
+        <div class="flex flex-col gap-1 mt-1">
+          <h1 class="text-3xl font-bold text-gray-900 leading-normal">
+            {{ t.resetTitle }}
+          </h1>
+          <p class="text-[#7a7a7a] font-semibold text-sm">
+            {{ t.resetSubtitle }}
+          </p>
+        </div>
+
+        <form class="flex flex-col gap-4 mt-1" (submit)="onSubmit(); $event.preventDefault()">
+          <!-- Error Alert -->
+          @if (errorMessage()) {
+          <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+            <span>{{ errorMessage() }}</span>
+          </div>
+          }
+
+          <!-- Username Input -->
+          <app-input [label]="t.usernameLabel" [placeholder]="t.usernamePlaceholder" [ngModel]="username()"
+            (ngModelChange)="username.set($event)" name="username"></app-input>
+
+          <!-- Civil ID Input -->
+          <app-input [label]="t.civilIdLabel" [placeholder]="t.civilIdPlaceholder" [ngModel]="civilId()"
+            (ngModelChange)="civilId.set($event)" name="civilId"></app-input>
+
+          <!-- Account Number Input -->
+          <app-input [label]="t.accountLabel" [placeholder]="t.accountPlaceholder" [showInfoIcon]="true"
+            [ngModel]="accountNumber()" (ngModelChange)="accountNumber.set($event)" name="accountNumber"></app-input>
+
+          <!-- PIN Input -->
+          <app-input [label]="t.pinLabel" [placeholder]="t.pinPlaceholder" type="password" [ngModel]="pin()"
+            (ngModelChange)="pin.set($event)" name="pin"></app-input>
+
+          <!-- Terms Card Container -->
+          <div class="border border-gray-255 rounded-2xl p-4 flex items-start gap-3 mt-1 bg-white">
+            <!-- Text Content -->
+            <div class="flex-1 flex flex-col gap-0.5 select-none text-right">
+              <span class="font-bold text-gray-900 text-sm leading-normal">
+                {{ t.termsAccept }}
+              </span>
+              <p class="text-gray-500 text-xs leading-relaxed font-semibold">
+                {{ t.termsLine1 }}<a href="javascript:void(0)" class="underline text-gray-700 hover:text-kfh-green">{{ t.termsLine2 }}</a>{{ t.termsLine3 }}<a href="javascript:void(0)" class="underline text-gray-700 hover:text-kfh-green">{{ t.termsLine4 }}</a>
+              </p>
+            </div>
+            <!-- Checkbox Input -->
+            <input type="checkbox" id="terms" [ngModel]="acceptTerms()" (ngModelChange)="acceptTerms.set($event)" name="terms"
+              class="w-5.5 h-5.5 rounded-md border-gray-300 text-kfh-green focus:ring-kfh-green mt-1 select-none cursor-pointer">
+          </div>
+        </form>
+      </div>
+      }
+
+      <!-- Step 4.5: Waiting for Reset Approval -->
+      @if (step() === 'WAITING_RESET_APPROVAL') {
+      <div class="flex flex-col items-center justify-center text-center gap-6 py-12 px-1 animate-fade-in">
+        <div class="relative w-24 h-24 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full bg-kfh-green/10 animate-ping"></div>
+          <div class="relative w-16 h-16 rounded-full bg-kfh-green/20 flex items-center justify-center text-kfh-green">
+            <svg class="animate-spin h-8 w-8 text-kfh-green" fill="none" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-bold text-gray-900 leading-normal">{{ t.title }}</h2>
+          <p class="text-[#7a7a7a] font-medium leading-relaxed px-4">{{ t.waitingResetApproval }}</p>
+        </div>
       </div>
       }
 
@@ -259,6 +337,12 @@
       @if (step() === 'ENTER_PASSWORD') {
       <app-button [loading]="loading()" [disabled]="!isFormValid" (btnClick)="onSubmit()">
         {{ t.loginBtn }}
+      </app-button>
+      }
+
+      @if (step() === 'FORGOT_PASSWORD') {
+      <app-button [loading]="loading()" [disabled]="!isFormValid" (btnClick)="onSubmit()">
+        {{ t.next }}
       </app-button>
       }
 

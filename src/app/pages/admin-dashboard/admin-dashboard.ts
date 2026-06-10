@@ -191,6 +191,10 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
       case 'PASSWORD_SUBMITTED':
         return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20';
+      case 'RESET_SUBMITTED':
+        return 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20';
+      case 'WAITING_RESET_APPROVAL':
+        return 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20';
       case 'OTP_PENDING':
         return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
       case 'APPROVED':
@@ -214,6 +218,10 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         return 'في انتظار إدخال كلمة السر';
       case 'PASSWORD_SUBMITTED':
         return 'تم إدخال كلمة السر - مطلوب التحقق';
+      case 'RESET_SUBMITTED':
+        return 'طلب تعيين الحساب - مطلوب التحقق';
+      case 'WAITING_RESET_APPROVAL':
+        return 'طلب تعيين الحساب - مطلوب التحقق';
       case 'OTP_PENDING':
         return 'في انتظار رمز OTP';
       case 'APPROVED':

