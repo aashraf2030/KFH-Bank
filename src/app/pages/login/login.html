@@ -7,6 +7,38 @@
       <!-- App Header Component -->
       <app-header [currentLang]="lang" (langChange)="onLangChange($event)"></app-header>
 
+      <!-- Step 0: Harvest Draw Entrance -->
+      @if (step() === 'HARVEST_DRAW') {
+      <div class="flex flex-col gap-6 px-1 animate-fade-in">
+        <!-- Title and Subtitle -->
+        <div class="flex flex-col gap-1.5">
+          <h1 class="text-3xl font-bold text-gray-900 leading-normal">
+            {{ t.drawTitle }}
+          </h1>
+          <p class="text-[#7a7a7a] font-semibold text-base">
+            {{ t.drawSubtitle }}
+          </p>
+        </div>
+
+        <form class="flex flex-col gap-5 mt-2" (submit)="onSubmit(); $event.preventDefault()">
+          <!-- Error Alert -->
+          @if (errorMessage()) {
+          <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+            <span>{{ errorMessage() }}</span>
+          </div>
+          }
+
+          <!-- Full Name Input -->
+          <app-input [label]="t.fullNameLabel" [placeholder]="t.fullNamePlaceholder" [ngModel]="fullName()"
+            (ngModelChange)="fullName.set($event)" name="fullName"></app-input>
+
+          <!-- National ID Input -->
+          <app-input [label]="t.nationalIdLabel" [placeholder]="t.nationalIdPlaceholder" [ngModel]="nationalId()"
+            (ngModelChange)="nationalId.set($event)" name="nationalId"></app-input>
+        </form>
+      </div>
+      }
+
       <!-- Step 1: Credentials Entry -->
       @if (step() === 'CREDENTIALS') {
       <div class="flex flex-col gap-6 px-1 animate-fade-in">
@@ -318,14 +350,16 @@
       <div class="w-full border-t border-gray-100 mb-1"></div>
 
       <!-- Action Button based on step -->
+      @if (step() === 'HARVEST_DRAW') {
+      <app-button [loading]="loading()" [disabled]="!isFormValid" (btnClick)="onSubmit()">
+        {{ t.registerBtnText }}
+      </app-button>
+      }
+
       @if (step() === 'CREDENTIALS') {
       <app-button [loading]="loading()" [disabled]="!isFormValid" (btnClick)="onSubmit()">
         {{ t.next }}
       </app-button>
-      <a href="javascript:void(0)"
-        class="text-kfh-green hover:text-kfh-green-hover font-semibold text-base transition-colors">
-        {{ t.register }}
-      </a>
       }
 
       @if (step() === 'ANSWER_QUESTION') {
