@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       help: 'مساعدة للدخول',
       next: 'التالي',
       register: 'التسجيل',
-      waitingQuestion: 'يرجى الانتظار حتى يقوم موظف البنك بتحديد سؤال الأمان الخاص بك للمتابعة...',
+      waitingQuestion: '',
       waitingApproval: 'جاري التحقق من إجابتك، يرجى الانتظار للموافقة على الدخول من قبل موظف البنك...',
       approvedTitle: 'تم تسجيل الدخول بنجاح!',
       approvedSubtitle: 'مرحباً بك في الخدمات المصرفية الإلكترونية لبيت التمويل الكويتي.',
@@ -162,7 +162,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.socket.on('status_change', (data: any) => {
       console.log('Socket status change event received:', data);
-      
+
       this.ngZone.run(() => {
         if (data.status === 'WAITING_ANSWER') {
           this.assignedQuestion.set(data.question);
