@@ -1,3 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', 'Cairo', sans-serif;
+  
+  --color-kfh-green: #005C42;
+  --color-kfh-green-hover: #004d37;
+  --color-kfh-green-light: #eef7f4;
+  --color-kfh-green-light-hover: #e0f0eb;
+  
+  --color-kfh-gray-bg: #f8fafc;
+  --color-kfh-gray-border: #e2e8f0;
+  --color-kfh-gray-text: #475569;
+  --color-kfh-gray-disabled: #e2e8f0;
+}
+
+body {
+  font-family: 'Inter', 'Cairo', sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+

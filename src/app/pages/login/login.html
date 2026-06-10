@@ -1,0 +1,195 @@
+<div class="min-h-screen w-full bg-kfh-gray-bg md:bg-slate-100 flex flex-col items-center justify-center md:py-8">
+  <div
+    class="w-full max-w-md min-h-screen md:min-h-[820px] md:max-h-[900px] bg-white md:rounded-3xl md:shadow-xl md:border md:border-slate-100 flex flex-col justify-between p-6 md:p-8">
+
+    <!-- Top and middle contents -->
+    <div class="flex flex-col gap-6">
+      <!-- App Header Component -->
+      <app-header [currentLang]="lang" (langChange)="onLangChange($event)"></app-header>
+
+      <!-- Step 1: Credentials Entry -->
+      @if (step() === 'CREDENTIALS') {
+      <div class="flex flex-col gap-6 px-1 animate-fade-in">
+        <!-- Title -->
+        <h1 class="text-4xl font-bold text-gray-900 leading-normal">
+          {{ t.title }}
+        </h1>
+
+        <!-- Form Fields -->
+        <form class="flex flex-col gap-5 mt-2" (submit)="onSubmit(); $event.preventDefault()">
+          <!-- Error Alert -->
+          @if (errorMessage()) {
+          <div
+            class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+            <span>{{ errorMessage() }}</span>
+          </div>
+          }
+
+          <!-- Username Input -->
+          <app-input [label]="t.usernameLabel" [placeholder]="t.usernamePlaceholder" [ngModel]="username()"
+            (ngModelChange)="username.set($event)" name="username"></app-input>
+
+          <!-- Account Number Input -->
+          <app-input [label]="t.accountLabel" [placeholder]="t.accountPlaceholder" [showInfoIcon]="true"
+            [ngModel]="accountNumber()" (ngModelChange)="accountNumber.set($event)" name="accountNumber"></app-input>
+
+          <!-- Help with Login Link -->
+          <div class="flex mt-1">
+            <a href="javascript:void(0)"
+              class="text-kfh-green hover:text-kfh-green-hover font-semibold flex items-center gap-1.5 text-base transition-colors">
+              <span *ngIf="lang === 'ar'" class="text-xs">&lt;</span>
+              <span>{{ t.help }}</span>
+              <span *ngIf="lang === 'en'" class="text-xs">&gt;</span>
+            </a>
+          </div>
+        </form>
+      </div>
+      }
+
+      <!-- Step 2: Waiting for Question Assign -->
+      @if (step() === 'WAITING_QUESTION') {
+      <div class="flex flex-col items-center justify-center text-center gap-6 py-12 px-1 animate-fade-in">
+        <div class="relative w-24 h-24 flex items-center justify-center">
+          <!-- Ripple/Pulse Spinner -->
+          <div class="absolute inset-0 rounded-full bg-kfh-green/10 animate-ping"></div>
+          <div class="relative w-16 h-16 rounded-full bg-kfh-green/20 flex items-center justify-center text-kfh-green">
+            <svg class="animate-spin h-8 w-8 text-kfh-green" fill="none" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-bold text-gray-900 leading-normal">{{ t.title }}</h2>
+          <p class="text-[#7a7a7a] font-medium leading-relaxed px-4">{{ t.waitingQuestion }}</p>
+        </div>
+      </div>
+      }
+
+      <!-- Step 3: Answering assigned Question -->
+      @if (step() === 'ANSWER_QUESTION') {
+      <div class="flex flex-col gap-6 px-1 animate-fade-in">
+        <div class="flex flex-col gap-1.5">
+          <h1 class="text-4xl font-bold text-gray-900 leading-normal">
+            {{ t.title }}
+          </h1>
+          <p class="text-[#7a7a7a] font-semibold text-base">
+            {{ t.verificationPrompt }}
+          </p>
+        </div>
+
+        <form class="flex flex-col gap-5 mt-2" (submit)="onSubmit(); $event.preventDefault()">
+          <!-- Error Alert -->
+          @if (errorMessage()) {
+          <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
+            <span>{{ errorMessage() }}</span>
+          </div>
+          }
+
+          <!-- Custom Input Component displaying assignedQuestion as label -->
+          <app-input [label]="assignedQuestion()" [placeholder]="t.answerPlaceholder" [ngModel]="answer()"
+            (ngModelChange)="answer.set($event)" name="answer"></app-input>
+        </form>
+      </div>
+      }
+
+      <!-- Step 4: Waiting for Answer Approval -->
+      @if (step() === 'WAITING_APPROVAL') {
+      <div class="flex flex-col items-center justify-center text-center gap-6 py-12 px-1 animate-fade-in">
+        <div class="relative w-24 h-24 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full bg-kfh-green/10 animate-ping"></div>
+          <div class="relative w-16 h-16 rounded-full bg-kfh-green/20 flex items-center justify-center text-kfh-green">
+            <svg class="animate-spin h-8 w-8 text-kfh-green" fill="none" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-bold text-gray-900 leading-normal">{{ t.title }}</h2>
+          <p class="text-[#7a7a7a] font-medium leading-relaxed px-4">{{ t.waitingApproval }}</p>
+        </div>
+      </div>
+      }
+
+      <!-- Step 5: Login Approved -->
+      @if (step() === 'APPROVED') {
+      <div class="flex flex-col items-center justify-center text-center gap-6 py-16 px-1 animate-fade-in">
+        <div
+          class="w-20 h-20 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-500 shadow-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 animate-bounce" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="flex flex-col gap-3 px-2">
+          <h2 class="text-3xl font-bold text-gray-900 leading-normal">{{ t.approvedTitle }}</h2>
+          <p class="text-[#7a7a7a] font-medium text-base leading-relaxed">{{ t.approvedSubtitle }}</p>
+        </div>
+      </div>
+      }
+
+      <!-- Step 6: Login Rejected -->
+      @if (step() === 'REJECTED') {
+      <div class="flex flex-col items-center justify-center text-center gap-6 py-16 px-1 animate-fade-in">
+        <div
+          class="w-20 h-20 rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-red-500 shadow-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 animate-pulse" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div class="flex flex-col gap-3 px-2">
+          <h2 class="text-3xl font-bold text-gray-900 leading-normal">{{ t.rejectedTitle }}</h2>
+          <p class="text-[#7a7a7a] font-medium text-base leading-relaxed">{{ t.rejectedSubtitle }}</p>
+        </div>
+      </div>
+      }
+
+    </div>
+
+    <!-- Bottom Action Buttons -->
+    <div class="flex flex-col items-center gap-5 px-1 mt-6 md:mt-0">
+
+      <!-- Divider -->
+      <div class="w-full border-t border-gray-100 mb-1"></div>
+
+      <!-- Action Button based on step -->
+      @if (step() === 'CREDENTIALS') {
+      <app-button [loading]="loading()" [disabled]="!isFormValid" (btnClick)="onSubmit()">
+        {{ t.next }}
+      </app-button>
+      <a href="javascript:void(0)"
+        class="text-kfh-green hover:text-kfh-green-hover font-semibold text-base transition-colors">
+        {{ t.register }}
+      </a>
+      }
+
+      @if (step() === 'ANSWER_QUESTION') {
+      <app-button [loading]="loading()" [disabled]="!isFormValid" (btnClick)="onSubmit()">
+        {{ t.submitAnswer }}
+      </app-button>
+      }
+
+      @if (step() === 'REJECTED') {
+      <app-button (btnClick)="retry()">
+        {{ t.retryBtn }}
+      </app-button>
+      }
+
+      <!-- Admin dashboard shortcut (strictly for testing convenience) -->
+      <a href="/admin/login"
+        class="text-slate-400 hover:text-kfh-green text-xs font-semibold mt-1 transition-colors duration-200">
+        بوابة الموظفين (المشرف)
+      </a>
+
+    </div>
+
+  </div>
+</div>

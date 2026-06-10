@@ -1,0 +1,17 @@
+<header class="w-full flex items-center justify-between py-4 px-6 md:px-0 bg-transparent select-none">
+  <!-- Language Selector Button (Pill badge) -->
+  <button type="button" (click)="toggleLanguage()"
+    class="bg-kfh-green-light hover:bg-kfh-green-light-hover text-kfh-green text-sm font-semibold px-4 py-1.5 rounded-full transition-colors duration-200 cursor-pointer">
+    {{ currentLang === 'ar' ? 'English' : 'العربية' }}
+  </button>
+
+  <!-- Hamburger Menu Button -->
+  <button type="button"
+    class="text-gray-900 hover:text-kfh-green p-1 transition-colors duration-200 focus:outline-none cursor-pointer"
+    aria-label="Menu">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+      stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+</header>
